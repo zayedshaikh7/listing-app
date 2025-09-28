@@ -1,0 +1,75 @@
+<% layout("/layouts/boilerplate") %>
+
+
+<div class="row">
+  <div class="col-8 offset-2">
+    <h3>Edit your details</h3>
+    <form method="POST" action="/listing/<%= data._id %>?_method=PUT" class="needs-validation" novalidate enctype="multipart/form-data">
+
+      <div>
+        <label for="title" class="form-label">Title</label>
+        <input name="listing[title]" type="text" value="<%= data.title %>" class="form-control" required>
+        <div class="invalid-feedback">Title is required.</div>
+        <br><br>
+      </div>
+
+      <div>
+        <label for="description" class="form-label">Description</label>
+        <input name="listing[description]" type="text" value="<%= data.description %>" class="form-control" required>
+        <div class="invalid-feedback">Description is required.</div>
+        <br><br>
+      </div>
+     <div class="mb-3">
+      original image:<br>
+      <img src="<%= data.image.url %>" alt="<%= data.title %>" class="show-image" style="max-width: 200px; max-height: 200px;">
+     </div>
+      <div>
+        <label for="image" class="form-label">New Image</label>
+        <input name="listing[image]" type="file" class="form-control">
+        <div class="invalid-feedback">Image URL is required.</div>
+        <br><br>
+      </div>
+     <div class="mb-3">
+        <label for="type" class="form-label">Type</label>
+        <select name="listing[type]" class="form-select" required>
+  <option value="">Select type</option>
+  <option value="Room" <%= data.type === "Room" ? "selected" : "" %>>Room</option>
+  <option value="City" <%= data.type === "City" ? "selected" : "" %>>City</option>
+  <option value="Mountain" <%= data.type === "Mountain" ? "selected" : "" %>>Mountain</option>
+  <option value="Beach" <%= data.type === "Beach" ? "selected" : "" %>>Beach</option>
+  <option value="Pool" <%= data.type === "Pool" ? "selected" : "" %>>Pool</option>
+  <option value="Castle" <%= data.type === "Castle" ? "selected" : "" %>>Castle</option>
+  <option value="Camping" <%= data.type === "Camping" ? "selected" : "" %>>Camping</option>
+  <option value="Arctic" <%= data.type === "Arctic" ? "selected" : "" %>>Arctic</option>
+  <option value="Village" <%= data.type === "Village" ? "selected" : "" %>>Village</option>
+</select>
+
+        <div class="invalid-feedback">Type is required.</div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <label for="country" class="form-label">Country</label>
+          <input name="listing[country]" type="text" value="<%= data.country %>" class="form-control" required>
+          <div class="invalid-feedback">Country is required.</div>
+          <br><br>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <label for="price" class="form-label">Price</label>
+        <input name="listing[price]" type="number" value="<%= data.price %>" class="form-control" required>
+        <div class="invalid-feedback">Price is required.</div>
+        <br><br>
+      </div>
+
+      <div>
+        <label for="location" class="form-label">Location</label>
+        <input name="listing[location]" type="text" value="<%= data.location %>" class="form-control" required>
+        <div class="invalid-feedback">Location is required.</div>
+        <br><br>
+      </div>
+
+      <button type="submit" class="btn-edit edit-btn">Edit</button>
+    </form>
+  </div>
+</div>

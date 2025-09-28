@@ -1,0 +1,93 @@
+
+<% layout("layouts/boilerplate") %>
+
+<div class="show-container">
+    <div class="show-card">
+        <div class="show-image-container">
+            <img src="<%= data.image.url %>" alt="<%= data.title %>" class="show-image">
+        </div>
+
+        <div class="show-info">
+            <h2 class="show-title"><%= data.title %></h2>
+            <p class="show-user">by @<%= data.owner.username %></p>
+            <p class="show-description"><%= data.description %></p>
+            <ul class="show-details">
+                <li><strong>Price:</strong> ₹<%= data.price.toLocaleString("en-IN") %></li>
+                <li><strong>Location:</strong> <%= data.location %></li>
+                <li><strong>Country:</strong> <%= data.country %></li>
+            </ul>
+
+            <% if(data.owner._id.equals(currentUser?._id)) { %>
+            <div class="show-actions">
+                <a href="/listing/<%= data._id %>/edit" class="btn-edit">Edit Listing</a>
+                <form method="post" action="/listing/<%= data._id %>?_method=delete">
+                    <button class="btn-delete">Delete Listing</button>
+                </form>
+            </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<br><br>
+
+<% if (currentUser){ %>
+<h4><b>Leave a Review</b></h4>
+<form action="/listing/<%= data._id %>/reviews" method="post" class="mb-4 needs-validation" novalidate>
+    <div class="mb-3">
+        <fieldset class="starability-slot">
+            <input type="radio" id="first-rate1" name="review[rating]" value="1" checked />
+            <label for="first-rate1" title="Terrible">1 star</label>
+            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+            <label for="first-rate2" title="Not good">2 stars</label>
+            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+            <label for="first-rate3" title="Average">3 stars</label>
+            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+            <label for="first-rate4" title="Very good">4 stars</label>
+            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+            <label for="first-rate5" title="Amazing">5 stars</label>
+        </fieldset>
+    </div>
+    <div class="mb-3">
+        <label for="comment" class="form-label">Comment</label>
+        <textarea id="comment" name="review[comment]" rows="5" class="form-control" placeholder="Write your review here..." required></textarea>
+        <div class="invalid-feedback">Please add a comment.</div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Review</button>
+</form>
+<% } %>
+
+<hr>
+<% if (data.reviews.length > 0) { %>
+<h4><b>All Reviews</b></h4>
+<div class="row">
+    <% for (let review of data.reviews){ %>
+    <div class="card col-md-5 mb-3 review-card">
+        <div class="card-body">
+            <h5 class="card-title"><%= review.author.username %></h5>
+            <p class="card-text"><%= review.comment %></p>
+            <p class="card-text"><%= review.rating %> star</p>
+            <p class="starability-result" data-rating="<%= review.rating %>"></p>
+            <% if(currentUser && review.author._id.equals(currentUser._id)) { %>
+            <form action="/listing/<%= data._id %>/reviews/<%= review._id %>?_method=delete" method="post">
+                <button class="btn btn-danger btn-sm">Delete</button>
+            </form>
+            <% } %>
+        </div>
+    </div>
+    <% } %>
+</div>
+<%  }  %>
+
+<h4><b>Location Map</b></h4>
+<div id="map" style="height: 400px; border-radius: 10px; margin-top: 20px;"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    const listingLat = "<%= data.geometry.lat %>";
+    const listingLng = "<%= data.geometry.lng %>";
+    const listingTitle = "<%= data.title %>";
+    const listingLocation = "<%= data.location %>";
+</script>
+<script src="/js/map.js"></script>
