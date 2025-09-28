@@ -78,6 +78,9 @@ app.use((req, res, next) => {
   res.locals.currentType = req.query.type || "all";
   next();
 });
+app.get("/", (req, res) => {
+    res.render("listings");
+});
 
 app.use("/listing", listings);
 app.use("/listing/:id/reviews", reviews);
