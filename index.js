@@ -18,6 +18,9 @@ const { setCurrentRoute } = require('./middleware');
 
 
 const dburl = process.env.Atlus_db_url;
+const url = https://listing-app-i6au.onrender.com/listing;
+const interval = 30000;
+
 
 // Database connection
 async function main() {
@@ -26,6 +29,19 @@ async function main() {
 main()
     .then(() => console.log("Connected to MongoDB"))
     .catch((err) => console.log(err));
+
+function reloadWebsite() {
+  axios
+    .get(url)
+    .then((response) => {
+      console.log("website reloded");
+    })
+    .catch((error) => {
+      console.error(Error : ${error.message});
+    });
+}
+
+setInterval(reloadWebsite, interval);
 
 // App configuration
 app.engine("ejs", ejsMate);
